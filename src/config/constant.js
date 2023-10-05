@@ -13,6 +13,7 @@ const DB_MODE = process.env.DB_MODE || 'mongoDB';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const NODE_ENV = process.env.NODE_ENV == 'production' ? process.env.NODE_ENV : 'development';
+const DEBUG = process.env.DEBUG || false;
 const MONGOOSE_URI = process.env.NODE_ENV == 'production' ? process.env.MONGOOSE_URI : process.env.MONGOOSE_URI_DEV;
 const TELEGRAM_TOKEN = process.env.NODE_ENV == 'production' ? process.env.TELEGRAM_TOKEN : process.env.TELEGRAM_TOKEN_DEV;
 const TELEGRAM_MAGIC_WORD = process.env.TELEGRAM_MAGIC_WORD || 'supercalifragilistico';
@@ -46,6 +47,7 @@ const constant = {
     __filename,
     __dirname,
     NODE_ENV,
+    DEBUG,
     MONGOOSE_URI,
     TELEGRAM_TOKEN,
     TELEGRAM_MAGIC_WORD,
