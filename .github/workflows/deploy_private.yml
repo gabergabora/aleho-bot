@@ -1,0 +1,71 @@
+name: deploy_private
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - run: pm2 delete aleho-bot
+        continue-on-error: true
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - name: Create .env file
+        run: |
+          touch .env
+          echo NODE_ENV=production >> .env
+          echo PROTOCOL=https >> .env
+          echo HOST=${{ vars.HOST }} >> .env
+          echo HOST_LOCAL=${{ vars.HOST_LOCAL }} >> .env
+          echo PORT=${{ vars.PORT }} >> .env
+          echo SECRET_STRING=${{ secrets.SECRET_STRING }} >> .env
+          echo PRIVATE_KEY=${{ secrets.PRIVATE_KEY }} >> .env
+          echo TIME_SESSION=${{ vars.TIME_SESSION }} >> .env
+          echo DB_MODE=${{ vars.DB_MODE }} >> .env
+          echo MONGOOSE_URI=${{ secrets.MONGOOSE_URI }} >> .env
+          echo MONGOOSE_URI_DEV=${{ secrets.MONGOOSE_URI_DEV }} >> .env
+          echo TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }} >> .env
+          echo TELEGRAM_TOKEN_DEV=${{ secrets.TELEGRAM_TOKEN_DEV }} >> .env
+          echo TELEGRAM_MAGIC_WORD=${{ secrets.TELEGRAM_MAGIC_WORD }} >> .env
+          echo DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }} >> .env
+          echo DISCORD_TOKEN_DEV=${{ secrets.DISCORD_TOKEN_DEV }} >> .env
+          echo DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }} >> .env
+          echo DISCORD_CLIENT_ID_DEV=${{ secrets.DISCORD_CLIENT_ID_DEV }} >> .env
+          echo DISCORD_WEBHOCK_TOKEN=${{ secrets.DISCORD_WEBHOCK_TOKEN }} >> .env
+          echo DISCORD_WEBHOCK_ID=${{ secrets.DISCORD_WEBHOCK_ID }} >> .env
+          echo BOT_INTERVAL=${{ vars.BOT_INTERVAL }} >> .env
+          echo GOOGLEBARD_1PSID=${{ secrets.GOOGLEBARD_1PSID }} >> .env
+          echo GOOGLEBARD_1PSIDCC=${{ secrets.GOOGLEBARD_1PSIDCC }} >> .env
+          echo GOOGLEBARD_CONTEXT=${{ vars.GOOGLEBARD_CONTEXT }} >> .env
+          echo SPAM_MSG_DELAY=${{ vars.SPAM_MSG_DELAY }} >> .env
+          echo ASK_LIMIT=${{ vars.ASK_LIMIT }} >> .env
+          echo ASK_LIMIT_TIME=${{ vars.ASK_LIMIT_TIME }} >> .env
+          echo EMAIL_HOST=${{ vars.EMAIL_HOST }} >> .env
+          echo EMAIL_PORT=${{ vars.EMAIL_PORT }} >> .env
+          echo EMAIL_SECURE=${{ vars.EMAIL_SECURE }} >> .env
+          echo EMAIL_USER=${{ secrets.EMAIL_USER }} >> .env
+          echo EMAIL_USER=${{ secrets.EMAIL_USER }} >> .env
+      - name: Copy CSR 
+        run: cp ~/cert.pem ~/actions-runner/_work/aleho-bot/aleho-bot/src/certificates/cert.pem
+      - name: Copy KEY
+        run: cp ~/key.pem ~/actions-runner/_work/aleho-bot/aleho-bot/src/certificates/key.pem
+  start:
+    needs: deploy
+    runs-on: self-hosted
+    steps:
+      - run: pm2 start pm2.json
+  test:
+    needs: start
+    runs-on: self-hosted
+    steps:
+      - run: npm run test --if-present
