@@ -46,6 +46,7 @@ jobs:
           echo BOT_INTERVAL=${{ vars.BOT_INTERVAL }} >> .env
           echo GOOGLEBARD_1PSID=${{ secrets.GOOGLEBARD_1PSID }} >> .env
           echo GOOGLEBARD_1PSIDCC=${{ secrets.GOOGLEBARD_1PSIDCC }} >> .env
+          echo GOOGLEBARD_1PSIDTS=${{ secrets.GOOGLEBARD_1PSIDTS }} >> .env
           echo GOOGLEBARD_CONTEXT=${{ vars.GOOGLEBARD_CONTEXT }} >> .env
           echo SPAM_MSG_DELAY=${{ vars.SPAM_MSG_DELAY }} >> .env
           echo ASK_LIMIT=${{ vars.ASK_LIMIT }} >> .env
