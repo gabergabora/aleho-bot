@@ -19,36 +19,43 @@ passport.use('signin', new LocalStrategy(
     },
     async (req, email, password, done) => {
         const user = await usersDao.findByEmail(email);
+        req.session.body = req.body;
+        req.session.error = '';
 
         if (req.body.name === '') {
-            const msg = `[USERS]: Signin fallido, falta el nombre.`;
-            logger.warn(msg);
+            const msg = `Error al registrar usuario, falta el nombre.`;
+            logger.warn('[USERS]: ' + msg);
+            req.session.error = msg;
             return done(null, false, { message: msg });
         };
 
         if (req.body.lastname === '') {
-            const msg = `[USERS]: Signin fallido, falta el apellido.`;
-            logger.warn(msg);
+            const msg = `Error al registrar usuario, falta el apellido.`;
+            logger.warn('[USERS]: ' + msg);
+            req.session.error = msg;
             return done(null, false, { message: msg });
         };
 
         if (user) {
-            const msg = `[USERS]: Signin fail, ${email} ya esta registrado.`;
-            logger.warn(msg);
+            const msg = `Error al registrar usuario, ${email} ya esta registrado.`;
+            logger.warn('[USERS]: ' + msg);
+            req.session.error = msg;
             return done(null, false, { message: msg });
         };
 
         if (req.body.password2 === undefined) { req.body.password2 = req.body.password };
 
         if (req.body.password != req.body.password2) {
-            const msg = `[USERS]: Signin fail, las contraseñas no coinciden.`;
-            logger.warn(msg);
+            const msg = `Error al registrar usuario, las contraseñas no coinciden.`;
+            logger.warn('[USERS]: ' + msg);
+            req.session.error = msg;
             return done(null, false, { message: msg });
         };
 
         if (!(passCheck(req.body.password))) {
-            const msg = `[USERS]: Signin fail, la contraseña debe tener al menos 6 carateres.`;
-            logger.warn(msg);
+            const msg = `Error al registrar usuario, la contraseña debe tener al menos 6 carateres.`;
+            logger.warn('[USERS]: ' + msg);
+            req.session.error = msg;
             return done(null, false, { message: msg });
         };
 
@@ -57,7 +64,7 @@ passport.use('signin', new LocalStrategy(
         nuevoUsuario.token = tokenGenerate(nuevoUsuario._doc);
         const msg = `[USERS]: User ${email} signin susscefuly`;
         logger.info(msg);
-        // logger.info('[TOKEN]: ' + nuevoUsuario.token);
+        logger.info('[TOKEN]: ' + nuevoUsuario.token);
         return done(null, nuevoUsuario);
     }
 ));
@@ -99,7 +106,7 @@ passport.deserializeUser(async (id, done) => {
         const { name, image, email, account: { admin } } = user._doc;
 
         done(null, {
-            name,            
+            name,
             image,
             email,
             admin

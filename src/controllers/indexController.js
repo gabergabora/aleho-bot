@@ -39,7 +39,9 @@ export const getLoginPage = (req, res) => {
 };
 
 export const getSigninPage = (req, res) => {
-  res.render('signin', { user: readUser(req) });
+  if (!req.session.data) { req.session.body = { name: '', lastname: '', email: '', image: '', password: '', password2: '' } };
+  console.log(req.session.data);
+  res.render('signin', { user: readUser(req), data: req.session.body });
 };
 
 export const getLoginFail = (req, res) => {
@@ -47,7 +49,7 @@ export const getLoginFail = (req, res) => {
 };
 
 export const getSigninFail = (req, res) => {
-  res.render('signinfail', { user: readUser(req) });
+  res.render('signinfail', { user: readUser(req), error: req.session.error });
 };
 
 export const getLogout = (req, res) => {
