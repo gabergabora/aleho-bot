@@ -39,8 +39,7 @@ export const getLoginPage = (req, res) => {
 };
 
 export const getSigninPage = (req, res) => {
-  if (!req.session.data) { req.session.body = { name: '', lastname: '', email: '', image: '', password: '', password2: '' } };
-  console.log(req.session.data);
+  if (!req.session.body) { req.session.body = { name: '', lastname: '', email: '', image: '', password: '', password2: '' } };  
   res.render('signin', { user: readUser(req), data: req.session.body });
 };
 
@@ -88,4 +87,8 @@ export const getLogger = (req, res) => {
 export const clearLog = async (req, res) => {
   const clearLogRes = await clearLogsFunction();
   res.render('msgpage', { user: readUser(req), msg: clearLogRes.message });
+};
+
+export const msgPage = async (req, res) => {
+  res.render('msgpage', { user: readUser(req), msg: req.session.msg });
 };

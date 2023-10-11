@@ -13,7 +13,8 @@ import {
     getSigninFail,
     getLogout,
     getLogger,
-    clearLog
+    clearLog, 
+    msgPage
 } from '../controllers/indexController.js';
 
 indexRouter.get('/', getIndexPage);
@@ -25,8 +26,9 @@ indexRouter.get('/logout', getLogout);
 indexRouter.get('/status', auth, getStatusPage);
 indexRouter.get('/logger', auth, isAdmin, getLogger);
 indexRouter.get('/clearlogs', auth, isAdmin, clearLog);
+indexRouter.get('/msgpage', auth, msgPage);
 
 indexRouter.post('/loginreq', passport.authenticate('login', { failureRedirect: '/loginfail' }), getIndexPage);
-indexRouter.post('/signinreq', passport.authenticate('signin', { failureRedirect: '/signinfail' }), getIndexPage);
+indexRouter.post('/signinreq', passport.authenticate('signin', { failureRedirect: '/signinfail' }), msgPage);
 
 export default indexRouter;

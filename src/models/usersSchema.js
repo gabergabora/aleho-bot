@@ -22,7 +22,6 @@ export const usersSchema = new mongoose.Schema({
         default: {
             confirmed: false,
             code: "0000",
-            expireCode: Date.now + 1,
             admin: false            
         }
     },

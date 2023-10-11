@@ -4,6 +4,7 @@ import { usersDao } from '../daos/index.js';
 import { encryptPassword, comparePassword } from '../utils/bcrypt.js';
 import logger from '../utils/logger.js';
 import { tokenGenerate } from './jsonwebtoken.js';
+import { generateCode, dateCodeExpire, sendCodeValidatorMail } from '../utils/nodemailer.js'
 
 const passCheck = (password) => {
     const min = 6;
@@ -21,6 +22,7 @@ passport.use('signin', new LocalStrategy(
         const user = await usersDao.findByEmail(email);
         req.session.body = req.body;
         req.session.error = '';
+        req.session.msg = '';
 
         if (req.body.name === '') {
             const msg = `Error al registrar usuario, falta el nombre.`;
@@ -62,10 +64,13 @@ passport.use('signin', new LocalStrategy(
         req.body.password = await encryptPassword(password);
         const nuevoUsuario = await usersDao.create(req.body);
         nuevoUsuario.token = tokenGenerate(nuevoUsuario._doc);
+        const sendCode = sendCodeValidatorMail('alejandro.r.abraham@gmail.com', 'Alejandro', generateCode(4));
+        req.session.msg = 'Se envió un codigo de validacion a su cuenta de correo, la proxima vez que inicie sesion deberá ingresar el codigo enviado.';
+
         const msg = `[USERS]: User ${email} signin susscefuly`;
         logger.info(msg);
         logger.info('[TOKEN]: ' + nuevoUsuario.token);
-        return done(null, nuevoUsuario);
+        return done(null, nuevoUsuario, { msg: req.session.msg });
     }
 ));
 
@@ -91,7 +96,7 @@ passport.use('login', new LocalStrategy(
         user.token = tokenGenerate(user);
         const msg = `[USERS]: User ${email} login exitoso`;
         logger.info(msg);
-        // logger.info('[TOKEN]: ' + user.token);
+        logger.info('[TOKEN]: ' + user.token);
         return done(null, user);
     }
 ));
