@@ -19,11 +19,11 @@ export const btchoy = async (interaction) => {
         }
 
         const valores = [
-            data.btc.bitso.ask,
             data.btc.letsbit.ask,
             data.btc.fiwind.ask,
             data.btc.tiendacrypto.ask,
-            data.btc.calypso.ask
+            data.btc.calypso.ask,
+            data.btc.bitsoalpha.ask
         ];
         const sumaValores = valores.reduce((acumulador, valores) => acumulador + valores, 0);
         const promedio = sumaValores / valores.length;
