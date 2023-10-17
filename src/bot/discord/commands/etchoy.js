@@ -19,11 +19,11 @@ export const etchoy = async (interaction) => {
         }
 
         const valores = [
-            data.etc.bitso.ask,
-            data.etc.letsbit.ask,
-            data.etc.fiwind.ask,
-            data.etc.tiendacrypto.ask,
-            data.etc.calypso.ask
+            data.eth.letsbit.ask,
+            data.eth.fiwind.ask,
+            data.eth.tiendacrypto.ask,
+            data.eth.calypso.ask,
+            data.eth.bitsoalpha.ask
         ];
         const sumaValores = valores.reduce((acumulador, valores) => acumulador + valores, 0);
         const promedio = sumaValores / valores.length;
@@ -39,7 +39,7 @@ export const etchoy = async (interaction) => {
         Tiendacrypto  u$${valores[3].toFixed(2)}
         Calypso       u$${valores[4].toFixed(2)}
         -------------------------
-        Promedio     u$${promedio.toFixed(2)}
+        Promedio      u$${promedio.toFixed(2)}
         `;
         interaction.reply({ content: codeBlock(msg) });
         return true;

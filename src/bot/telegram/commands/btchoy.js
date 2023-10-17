@@ -18,11 +18,11 @@ export const btchoy = async (bot, chatUser) => {
         }
 
         const valores = [
-            data.btc.bitso.ask,
             data.btc.letsbit.ask,
             data.btc.fiwind.ask,
             data.btc.tiendacrypto.ask,
-            data.btc.calypso.ask
+            data.btc.calypso.ask,
+            data.btc.bitsoalpha.ask
         ];
         const sumaValores = valores.reduce((acumulador, valores) => acumulador + valores, 0);
         const promedio = sumaValores / valores.length;
@@ -32,13 +32,13 @@ export const btchoy = async (bot, chatUser) => {
           <b></b>
           <code> Exchange     Precio </code>
           <code> ------------------------</code>
-          <code> Bitso        u$${valores[0].toFixed(2)} </code>
-          <code> Letsbit      u$${valores[1].toFixed(2)} </code>
-          <code> Fiwind       u$${valores[2].toFixed(2)} </code>
-          <code> Tiendacrypto u$${valores[3].toFixed(2)} </code>
-          <code> Calypso      u$${valores[4].toFixed(2)} </code>
+          <code> Letsbit        u$${valores[0].toFixed(2)} </code>
+          <code> Fiwind         u$${valores[1].toFixed(2)} </code>
+          <code> Tiendacrypto   u$${valores[2].toFixed(2)} </code>
+          <code> Calypso        u$${valores[3].toFixed(2)} </code>
+          <code> Bitsoalpha     u$${valores[4].toFixed(2)} </code>
           <code> ------------------------</code>
-          <code> Promedio     u$${promedio.toFixed(2)} </code>
+          <code> Promedio       u$${promedio.toFixed(2)} </code>
           <b></b>
           `;
 

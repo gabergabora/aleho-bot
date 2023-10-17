@@ -32,18 +32,18 @@ export const btc_ethFunction = async () => {
 
         const data = {
             btc: {
-                bitso: response0.data.bitso,
                 letsbit: response0.data.letsbit,
                 fiwind: response0.data.fiwind,
                 tiendacrypto: response0.data.tiendacrypto,
                 calypso: response0.data.calypso,
+                bitsoalpha: response0.data.bitsoalpha,
             },
-            etc: {
-                bitso: response1.data.bitso,
+            eth: {
                 letsbit: response1.data.letsbit,
                 fiwind: response1.data.fiwind,
                 tiendacrypto: response1.data.tiendacrypto,
                 calypso: response1.data.calypso,
+                bitsoalpha: response1.data.bitsoalpha,
             }
         };
 
