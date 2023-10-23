@@ -115,7 +115,9 @@ const msgHandler = async (bot, googlebard, chatUser, text) => {
                     bot.sendMessage(chatUser.chatID, msg);
                     break;
                 };
-                const response = await googlebard.ask(text, chatUser.userID);                
+                const response = await googlebard.ask(text, chatUser.userID);
+                if (constant.DEBUG) { console.log('***DEBUG***: googlebard response: ', response); };
+                if (response === '') throw new Error('Googlebard response empty');
                 bot.sendMessage(chatUser.chatID, response);
                 logger.info(`[TELEGRAM BOT]: USERNAME: ${chatUser.userName}  RESPUESTA: ${response}`);
             } catch (error) {
