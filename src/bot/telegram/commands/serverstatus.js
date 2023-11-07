@@ -20,7 +20,7 @@ export const serverstatus = async (bot, chatUser) => {
             `🧮  Free memory: ${freeMemory} MB`,
             `🧮  Total memory: ${totalMemory} MB`
         ].join('\n');
-
+        
         bot.sendMessage(chatUser.chatID, message);
         return true;
     } catch (error) {
